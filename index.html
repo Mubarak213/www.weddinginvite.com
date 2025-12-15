@@ -79,10 +79,14 @@
             align-items: center;
             border-radius: 12px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            font-size: 40px;
-            color: #007bff;
             z-index: 2;
             text-decoration: none;
+        }
+
+        .direction-symbol img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
         }
 
         /* Instagram + QR container */
@@ -97,7 +101,6 @@
             z-index: 2;
         }
 
-        /* Instagram link */
         .instagram-link {
             display: flex;
             align-items: center;
@@ -117,7 +120,6 @@
             margin-right: 6px;
         }
 
-        /* QR code */
         .qr-page {
             width: 140px;
             height: 140px;
@@ -132,6 +134,29 @@
             height: 100%;
             object-fit: contain;
         }
+
+        /* Download invite button */
+        .invite-download {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffffff;
+            color: #000;
+            padding: 12px 26px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 2;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .invite-download:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
     </style>
 </head>
 
@@ -142,13 +167,13 @@
     <source src="background.mp4" type="video/mp4">
 </video>
 
-<!-- Left navigation button -->
+<!-- Left navigation button with image -->
 <a href="https://www.google.com/maps/dir/?api=1&destination=13.340906,79.430384"
    target="_blank" class="direction-symbol">
-    ➤
+    <img src="direction.png" alt="Directions">
 </a>
 
-<!-- Instagram above QR -->
+<!-- Instagram and QR -->
 <div class="qr-instagram-box">
     <a href="https://instagram.com/mins_of_light" target="_blank" class="instagram-link">
         <img src="instagram-icon.png" alt="Instagram">
@@ -169,6 +194,11 @@
         <div class="welcome-text">Welcome</div>
     </div>
 </div>
+
+<!-- Download Invite -->
+<a href="invite.pdf" download class="invite-download">
+    ⬇ Download Invite
+</a>
 
 <script>
     const slides = document.querySelectorAll('.slide');
