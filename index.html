@@ -12,7 +12,7 @@
             overflow: hidden;
         }
 
-        /* Full-page video background */
+        /* Background video */
         #bg-video {
             position: fixed;
             inset: 0;
@@ -28,7 +28,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1;
         }
 
         .slideshow-container {
@@ -66,11 +65,28 @@
             border-radius: 20px;
         }
 
-        /* Left navigation button */
-        .direction-symbol {
+        /* Direction button + label */
+        .direction-box {
             position: fixed;
             bottom: 20px;
             left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            z-index: 2;
+        }
+
+        .direction-label {
+            color: #fff;
+            font-size: 13px;
+            background: rgba(0,0,0,0.6);
+            padding: 5px 10px;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        .direction-symbol {
             width: 80px;
             height: 80px;
             background: #fff;
@@ -79,17 +95,15 @@
             align-items: center;
             border-radius: 12px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 2;
             text-decoration: none;
         }
 
         .direction-symbol img {
             width: 45px;
             height: 45px;
-            object-fit: contain;
         }
 
-        /* Instagram + QR container */
+        /* Instagram + QR */
         .qr-instagram-box {
             position: fixed;
             bottom: 20px;
@@ -99,6 +113,16 @@
             align-items: center;
             gap: 8px;
             z-index: 2;
+        }
+
+        .instagram-note {
+            color: #fff;
+            font-size: 13px;
+            text-align: center;
+            background: rgba(0,0,0,0.6);
+            padding: 6px 10px;
+            border-radius: 10px;
+            max-width: 180px;
         }
 
         .instagram-link {
@@ -112,6 +136,7 @@
             color: #E4405F;
             font-weight: bold;
             font-size: 14px;
+            cursor: pointer;
         }
 
         .instagram-link img {
@@ -135,13 +160,13 @@
             object-fit: contain;
         }
 
-        /* Download invite button */
+        /* Download invite */
         .invite-download {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: #ffffff;
+            background: #fff;
             color: #000;
             padding: 12px 26px;
             border-radius: 30px;
@@ -150,12 +175,59 @@
             text-decoration: none;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             z-index: 2;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .invite-download:hover {
-            transform: translateX(-50%) scale(1.05);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        /* Instagram preview popup */
+        .ig-preview-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+        }
+
+        .ig-preview {
+            background: #fff;
+            width: 280px;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .ig-preview img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .ig-preview h3 {
+            margin: 5px 0;
+            font-size: 18px;
+        }
+
+        .ig-preview p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .ig-follow-btn {
+            background: #E4405F;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -167,15 +239,22 @@
     <source src="background.mp4" type="video/mp4">
 </video>
 
-<!-- Left navigation button with image -->
-<a href="https://www.google.com/maps/dir/?api=1&destination=13.340906,79.430384"
-   target="_blank" class="direction-symbol">
-    <img src="direction.png" alt="Directions">
-</a>
+<!-- Direction Button with Label -->
+<div class="direction-box">
+    <div class="direction-label">Get direction</div>
+    <a href="https://www.google.com/maps/dir/?api=1&destination=13.340906,79.430384"
+       target="_blank" class="direction-symbol">
+        <img src="direction.png" alt="Directions">
+    </a>
+</div>
 
-<!-- Instagram and QR -->
+<!-- Instagram Section -->
 <div class="qr-instagram-box">
-    <a href="https://instagram.com/mins_of_light" target="_blank" class="instagram-link">
+    <div class="instagram-note">
+        If you enjoyed this,<br>follow me for more like it.
+    </div>
+
+    <a class="instagram-link" onclick="openIGPreview(event)">
         <img src="instagram-icon.png" alt="Instagram">
         @mins_of_light
     </a>
@@ -185,7 +264,7 @@
     </div>
 </div>
 
-<!-- Center slideshow -->
+<!-- Slideshow -->
 <div class="page-center">
     <div class="slideshow-container">
         <img src="image1.jpg" class="slide active">
@@ -200,7 +279,20 @@
     ⬇ Download Invite
 </a>
 
+<!-- Instagram Preview Popup -->
+<div class="ig-preview-overlay" id="igPreview" onclick="closeIGPreview()">
+    <div class="ig-preview" onclick="event.stopPropagation()">
+        <img src="instagram-icon.png" alt="Instagram">
+        <h3>@mins_of_light</h3>
+        <p>Follow me to get this invitation ✨</p>
+        <a href="https://instagram.com/mins_of_light" target="_blank" class="ig-follow-btn">
+            Follow on Instagram
+        </a>
+    </div>
+</div>
+
 <script>
+    /* Slideshow */
     const slides = document.querySelectorAll('.slide');
     let current = 0;
 
@@ -209,6 +301,16 @@
         current = (current + 1) % slides.length;
         slides[current].classList.add('active');
     }, 2000);
+
+    /* Instagram preview */
+    function openIGPreview(e) {
+        e.preventDefault();
+        document.getElementById('igPreview').style.display = 'flex';
+    }
+
+    function closeIGPreview() {
+        document.getElementById('igPreview').style.display = 'none';
+    }
 </script>
 
 </body>
